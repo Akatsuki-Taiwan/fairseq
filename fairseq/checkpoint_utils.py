@@ -566,6 +566,8 @@ def torch_persistent_save(obj, filename, async_write: bool = False):
             # do atomic save
             with PathManager.open(filename + ".tmp", "wb") as f:
                 _torch_persistent_save(obj, f)
+            if os.path.isfile(filename):
+                os.remove(filename)
             PathManager.rename(filename + ".tmp", filename)
         else:
             # fallback to non-atomic save
